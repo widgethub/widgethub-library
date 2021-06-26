@@ -1,0 +1,40 @@
+<html>
+
+  <head></head>
+  <body>
+    
+  <link href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css" rel="stylesheet">
+  <script>
+    (function(doc, tag, id){
+         var js,fjs  = doc.getElementsByTagName(tag)[0];
+         if (doc.getElementById(id)) {return;}
+         js = doc.createElement(tag); js.id = id;
+         js.src = './github.js';
+         js.type = "text/javascript";
+         fjs.parentNode.insertBefore(js, fjs);
+         ds = doc.createElement('div'); ds.id = id+'div';
+         fjs.parentNode.insertBefore(ds, fjs);
+ 
+       }(document, 'script', 'widgethub-github'));
+
+       window.onload = function() {
+         widget.setOptions( {
+           id: "fairnightzz",
+           information: {
+             username: true,
+             followers: true,
+             following: true,
+             repocount: true,
+             pastyearcontributions: true
+           },
+           theme: "dark", // light, dark, red, blue, orange
+           edges: true,
+           size: [100,100]
+         })
+
+         widget.render();
+       }
+    </script>
+
+  </body>
+</html>
