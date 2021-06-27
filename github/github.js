@@ -97,7 +97,7 @@ var widget = {
     var html = '<link href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css" rel="stylesheet">';
 
 
-    html+= `<div class="flex items-center">
+    html+= `
 
 <div class="max-w-xs">
     <div class="bg-gradient-to-r from-${theme.background1} to-${theme.background2} shadow-xl rounded-2xl py-3">
@@ -141,8 +141,6 @@ var widget = {
 
         </div>
     </div>
-</div>
-
 </div>`
     return html;
 
