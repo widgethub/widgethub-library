@@ -108,7 +108,7 @@ var widget = {
 <div class="max-w-xs">
     <div class="bg-gradient-to-r from-${theme.background1} to-${theme.background2} shadow-xl rounded-2xl py-3">
         <div class="photo-wrapper p-2">
-            <img class="w-32 h-32 rounded-full mx-auto" src="${response.avatarUrl}" alt="Avatar">
+            <img class="w-32 h-32 rounded-full mx-auto" src="https://${response.avatarUrl.substring(2)}" alt="Avatar">
         </div>
         <div class="p-2">
           <div class="flex items-center justify-center">
