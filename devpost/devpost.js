@@ -1,7 +1,7 @@
 var widget = {
   options: {
     id: "",
-    API_URL:"https://widget.discoursevr.space/",
+    API_URL:"https://api.widgethub.space/",
     theme: 
     {
       background1: "indigo-800",
