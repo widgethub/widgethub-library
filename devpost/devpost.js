@@ -12,7 +12,7 @@ var widget = {
     },
     edges: true,
     customMessage: "",
-    div: "widgethub-githubdiv"
+    div: "widgethub-devpostdiv"
   },
   targetHtmlEle: "",
   messages: {
@@ -59,7 +59,7 @@ var widget = {
     }
 
     // Loader gif
-    this.targetHtmlEle.innerHTML = '<img class="widgethub-github" src="https://i.pinimg.com/originals/df/d2/68/dfd2683c9701642c776e31d3b0d603a9.gif" />';
+    this.targetHtmlEle.innerHTML = '<img class="widgethub-devpost" src="https://i.pinimg.com/originals/df/d2/68/dfd2683c9701642c776e31d3b0d603a9.gif" />';
 
     //this.applyCSS();
       this.targetHtmlEle.innerHTML = this.template(await this.fetch());
@@ -69,13 +69,15 @@ var widget = {
   fetch: function() {
     const data = JSON.stringify({
       query: `query MyQuery {
-        getGithubUser(username:"${this.options.id}"){
+        getDevpostUser(username:"${this.options.id}"){
           username
+          projectsCount
+          hackathonsCount
+          achievementsCount
           followers
           following
-          repoCount
+          likesCount
           avatarUrl
-          pastYearContributions
         }
      }`
     })
@@ -95,13 +97,13 @@ var widget = {
   },
   template: function(response) {
     console.log(response);
-    response = response.data.getGithubUser;
+    response = response.data.getDevpostUser;
     theme = this.options.theme;
-    logo = "https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png"
+    logo = "https://pbs.twimg.com/profile_images/625987202909085696/KKYbLP8y_400x400.jpg"
     var html = '<link href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css" rel="stylesheet">';
 
 
-    html+= `
+    html+= `<div class="flex items-center"> 
 
 <div class="max-w-xs">
     <div class="bg-gradient-to-r from-${theme.background1} to-${theme.background2} shadow-xl rounded-2xl py-3">
@@ -134,16 +136,25 @@ var widget = {
                 </tr>
                 <tr>
                     <td class="px-2 py-2 text-${theme.titleColor} font-bold">Repository Count</td>
-                    <td class="px-2 py-2 text-${theme.descriptionColor}">${response.repoCount}</td>
+                    <td class="px-2 py-2 text-${theme.descriptionColor}">${response.projectsCount}</td>
                 </tr>
                 <tr>
                     <td class="px-2 py-2 text-${theme.titleColor} font-bold">Past Year Contributions</td>
-                    <td class="px-2 py-2 text-${theme.descriptionColor}">${response.pastYearContributions}</td>
+                    <td class="px-2 py-2 text-${theme.descriptionColor}">${response.hackathonsCount}</td>
+                </tr>
+                 <tr>
+                    <td class="px-2 py-2 text-${theme.titleColor} font-bold">Past Year Contributions</td>
+                    <td class="px-2 py-2 text-${theme.descriptionColor}">${response.achievementsCount}</td>
+                </tr>
+                  <tr>
+                    <td class="px-2 py-2 text-${theme.titleColor} font-bold">Likes Count</td>
+                    <td class="px-2 py-2 text-${theme.descriptionColor}">${response.likesCount}</td>
                 </tr>
  
             </tbody></table>
 
         </div>
+    </div>
     </div>
 </div>`
     return html;
