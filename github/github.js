@@ -2,24 +2,16 @@ var widget = {
   options: {
     id: "",
     API_URL:"https://widget.discoursevr.space/",
-    information: {
-      username: true,
-      followers: false,
-      following: false,
-      repocount: false,
-      pastyearcontributions: false
-    },
     theme: 
-      {
-        background: "bg-indigo-600",
-        titleColor: "#000",
-        dateColor: "#dadada",
-        imgBorderColor: "#ddd",
-        descriptionColor: "#000"
-    }
-    ,
+    {
+      background1: "indigo-800",
+      background2: "blue-800",
+      titleColor: "indigo-50",
+      titleHoverColor: "red-500",
+      descriptionColor: "gray-300"
+    },
     edges: true,
-    size: [100,100],
+    customMessage: "",
     targetId: "widgethub-githubdiv"
   },
   targetHtmlEle: "",
@@ -29,80 +21,33 @@ var widget = {
     missingParams: "not enough params",
     errorFetching: "Error fetching data from remote url"
   },
-  themes: {
-    default: {
-        background: "bg-indigo-600",
-        titleColor: "#000",
-        dateColor: "#dadada",
-        imgBorderColor: "#ddd",
-        descriptionColor: "#000"
-    },
-    blue: {
-        background: "bg-gradient-to-r from-indigo-800 to-blue-800",
-        titleColor: "text-indigo-50",
-        headerColor: "text-pink-600",
-        header2Color: "text-red-500",
-        descriptionColor: "text-gray-300"
-    },
-    green: {
-        background: "#10d010",
-        titleColor: "#fff",
-        dateColor: "#b90404",
-        imgBorderColor: "#a97e1d",
-        descriptionColor: "#000"
-    },
-    purple: {
-        background: "#6310d0",
-        titleColor: "#fff",
-        dateColor: "#f7f3f3",
-        imgBorderColor: "#a97e1d",
-        descriptionColor: "#000"
-    },
-    dark: {
-        background: "#000",
-        titleColor: "#fff",
-        dateColor: "#f7f3f3",
-        imgBorderColor: "#a97e1d",
-        descriptionColor: "#fff"
-    }
-  },
   setOptions: function(options) {
     if (options.id) {
       this.options.id = options.id;
     }
     if (options.theme) {
-      console.log(options.theme)
-      this.options.theme = this.themes[options.theme];
-      console.log(this.options.theme)
+      this.options.theme = options.theme
     }
 
     if (options.edges) {
       this.options.edges = options.edges;
     }
 
-    if (options.size) {
-      this.options.size = options.size;
+    if (options.customMessage) {
+      this.options.customMessage = options.customMessage;
     }
-    // information:
 
-    if (options.information) {
-      this.options.information = options.information;
-    }
   },
   validate: function () {
     if (!this.options.id) {
       console.log(this.messages.missingId);
     }
-    if (!this.options.id) {
-      console.log(this.messages.missingId);
-    }
     this.targetHtmlEle = document.getElementById(this.options.targetId);
-      if(!this.targetHtmlEle) {
-          console.log(this.messages.missingTargetHtml);
-          return false;
-      }
+    if(!this.targetHtmlEle) {
+        console.log(this.messages.missingTargetHtml);
+        return false;
+    }
     return true;
- 
   },
   render: async function() {
     if (!this.validate()) {
@@ -120,11 +65,12 @@ var widget = {
   fetch: function() {
     const data = JSON.stringify({
       query: `query MyQuery {
-        getUser(username:"${this.options.id}"){
+        getGithubUser(username:"${this.options.id}"){
           username
           followers
           following
           repoCount
+          avatarUrl
           pastYearContributions
         }
      }`
@@ -144,46 +90,54 @@ var widget = {
 
   },
   template: function(response) {
-    console.log(response)
-    response = response.data.getUser
+    console.log(response);
+    response = response.data.getGithubUser;
+    theme = this.options.theme;
+    logo = "https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png"
     var html = '<link href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css" rel="stylesheet">';
 
 
     html+= `<div class="flex items-center">
 
 <div class="max-w-xs">
-    <div class="${this.options.theme.background} shadow-xl rounded-2xl py-3">
+    <div class="bg-gradient-to-r from-${theme.background1} to-${theme.background2} shadow-xl rounded-2xl py-3">
         <div class="photo-wrapper p-2">
-            <img class="w-32 h-32 rounded-full mx-auto" src="https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png" alt="John Doe">
+            <img class="w-32 h-32 rounded-full mx-auto" src="${response.avatarUrl}" alt="Avatar">
         </div>
         <div class="p-2">
-            <h3 class="text-center text-xl ${this.options.theme.titleColor} font-medium leading-8">${response.username}</h3>
-            <div class="text-center ${this.options.theme.descriptionColor} text-xs font-semibold">
-                <p>Web Developer</p>
-            </div>
-            <table class="text-xs my-3">
+          <div class="flex items-center justify-center">
+            <img class="w-6 h-6 rounded-full m-1" src="${logo}" alt="Logo">
+            <h3 class="text-center text-xl text-${theme.titleColor} 
+            font-medium leading-8 hover:text-${theme.titleHoverColor}"
+             ><a href="https://github.com/${response.username}" target="_blank">${response.username}</a></h3>
+          </div>
+            `
+
+    if (this.options.customMessage !== "") {
+      html+=`<div class="text-center text-${theme.descriptionColor} text-xs font-semibold">
+           <p>${this.options.customMessage}</p>
+            </div>`
+    }
+    html+=` 
+            <table class="text-xs mt-2">
                 <tbody><tr>
-                    <td class="px-2 py-2 ${this.options.theme.titleColor} font-bold">Followers</td>
-                    <td class="px-2 py-2 ${this.options.theme.descriptionColor}">${response.followers}</td>
+                    <td class="px-2 py-2 text-${theme.titleColor} font-bold">Followers</td>
+                    <td class="px-2 py-2 text-${theme.descriptionColor}">${response.followers}</td>
                 </tr>
                 <tr>
-                    <td class="px-2 py-2 ${this.options.theme.titleColor} font-bold">Following</td>
-                    <td class="px-2 py-2 ${this.options.theme.descriptionColor}">${response.following}</td>
+                    <td class="px-2 py-2 text-${theme.titleColor} font-bold">Following</td>
+                    <td class="px-2 py-2 text-${theme.descriptionColor}">${response.following}</td>
                 </tr>
                 <tr>
-                    <td class="px-2 py-2 ${this.options.theme.titleColor} font-bold">Repository Count</td>
-                    <td class="px-2 py-2 ${this.options.theme.descriptionColor}">${response.repoCount}</td>
+                    <td class="px-2 py-2 text-${theme.titleColor} font-bold">Repository Count</td>
+                    <td class="px-2 py-2 text-${theme.descriptionColor}">${response.repoCount}</td>
                 </tr>
                 <tr>
-                    <td class="px-2 py-2 ${this.options.theme.titleColor} font-bold">Past Year Contributions</td>
-                    <td class="px-2 py-2 ${this.options.theme.descriptionColor}">${response.pastYearContributions}</td>
+                    <td class="px-2 py-2 text-${theme.titleColor} font-bold">Past Year Contributions</td>
+                    <td class="px-2 py-2 text-${theme.descriptionColor}">${response.pastYearContributions}</td>
                 </tr>
  
             </tbody></table>
-
-            <div class="text-center my-3">
-                <a class="text-xs ${this.options.theme.headerColor} hover:${this.options.theme.header2Color} font-medium" href="https://github.com/${response.username}" target="_blank">View Profile</a>
-            </div>
 
         </div>
     </div>

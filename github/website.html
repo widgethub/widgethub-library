@@ -3,12 +3,12 @@
   <head></head>
   <body>
     
-  <link href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css" rel="stylesheet">
   <script>
     (function(doc, tag, id){
          var js,fjs  = doc.getElementsByTagName(tag)[0];
          if (doc.getElementById(id)) {return;}
          js = doc.createElement(tag); js.id = id;
+         //js.src = 'https://widget.discoursevr.space/cdn/github/github.js';
          js.src = './github.js';
          js.type = "text/javascript";
          fjs.parentNode.insertBefore(js, fjs);
@@ -20,16 +20,16 @@
        window.onload = function() {
          widget.setOptions( {
            id: "fairnightzz",
-           information: {
-             username: true,
-             followers: true,
-             following: true,
-             repocount: true,
-             pastyearcontributions: true
+           theme: 
+           {
+             background1: "indigo-800",
+             background2: "blue-800",
+             titleColor: "indigo-50",
+             titleHoverColor: "red-500",
+             descriptionColor: "gray-300"
            },
-           theme: "blue", // light, dark, red, blue, orange
            edges: true,
-           size: [100,100]
+           customMessage: "poo"
          })
 
          widget.render();
