@@ -3,6 +3,10 @@
   <head></head>
   <body>
     
+    <div style="margin: 5rem">
+      <div id="widgethubscript"></div>
+    </div>
+
  <script id="widgethubscript">
     
     (function(r1,r2){
@@ -12,8 +16,8 @@
           if (doc.getElementById(id)) {return;}
           
           js = doc.createElement(tag); js.id = id;
-          js.src = 'https://widget.discoursevr.space/cdn/github/github.js';
-          //js.src = './github.js';
+          // js.src = 'https://widget.discoursevr.space/cdn/github/github.js';
+          js.src = './github-projects.js';
           js.type = "text/javascript";
           fjs.parentNode.insertBefore(js, fjs);
           ds = doc.createElement('div'); ds.id = r1;
