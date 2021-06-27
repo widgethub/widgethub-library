@@ -1,0 +1,51 @@
+<html>
+
+  <head></head>
+  <body>
+    
+ <script id="widgethubscript">
+    
+    (function(r1,r2){
+      console.log(r1,r2);
+      (function(doc, tag, id){
+          var js,fjs  = doc.getElementById("widgethubscript");
+          if (doc.getElementById(id)) {return;}
+          
+          js = doc.createElement(tag); js.id = id;
+          js.src = 'https://widget.discoursevr.space/cdn/github/github.js';
+          //js.src = './github.js';
+          js.type = "text/javascript";
+          fjs.parentNode.insertBefore(js, fjs);
+          ds = doc.createElement('div'); ds.id = r1;
+          fjs.parentNode.insertBefore(ds, fjs);
+  
+        }(document, 'script', r2));
+
+        
+        window.onload = function() {
+          widget.setOptions( {
+            id: "fairnightzz",
+            theme: 
+            {
+              background1: "indigo-800",
+              background2: "blue-800",
+              titleColor: "indigo-50",
+              titleHoverColor: "red-500",
+              descriptionColor: "gray-300"
+            },
+            edges: true,
+            customMessage: "poo",
+            div: r1
+          })
+
+          widget.render();
+        }
+  
+
+    }(Math.random().toString(36).substring(7), Math.random().toString(36).substring(7)))
+      
+    </script>
+
+
+  </body>
+</html>

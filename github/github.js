@@ -12,7 +12,7 @@ var widget = {
     },
     edges: true,
     customMessage: "",
-    targetId: "widgethub-githubdiv"
+    div: "widgethub-githubdiv"
   },
   targetHtmlEle: "",
   messages: {
@@ -37,12 +37,16 @@ var widget = {
       this.options.customMessage = options.customMessage;
     }
 
+    if (options.div) {
+      this.options.div = options.div;
+    }
+
   },
   validate: function () {
     if (!this.options.id) {
       console.log(this.messages.missingId);
     }
-    this.targetHtmlEle = document.getElementById(this.options.targetId);
+    this.targetHtmlEle = document.getElementById(this.options.div);
     if(!this.targetHtmlEle) {
         console.log(this.messages.missingTargetHtml);
         return false;
