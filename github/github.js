@@ -9,7 +9,15 @@ var widget = {
       repocount: false,
       pastyearcontributions: false
     },
-    theme: "light",
+    theme: 
+      {
+        background: "bg-indigo-600",
+        titleColor: "#000",
+        dateColor: "#dadada",
+        imgBorderColor: "#ddd",
+        descriptionColor: "#000"
+    }
+    ,
     edges: true,
     size: [100,100],
     targetId: "widgethub-githubdiv"
@@ -22,13 +30,50 @@ var widget = {
     errorFetching: "Error fetching data from remote url"
   },
   themes: {
+    default: {
+        background: "bg-indigo-600",
+        titleColor: "#000",
+        dateColor: "#dadada",
+        imgBorderColor: "#ddd",
+        descriptionColor: "#000"
+    },
+    blue: {
+        background: "bg-gradient-to-r from-indigo-800 to-blue-800",
+        titleColor: "text-indigo-50",
+        headerColor: "text-pink-600",
+        header2Color: "text-red-500",
+        descriptionColor: "text-gray-300"
+    },
+    green: {
+        background: "#10d010",
+        titleColor: "#fff",
+        dateColor: "#b90404",
+        imgBorderColor: "#a97e1d",
+        descriptionColor: "#000"
+    },
+    purple: {
+        background: "#6310d0",
+        titleColor: "#fff",
+        dateColor: "#f7f3f3",
+        imgBorderColor: "#a97e1d",
+        descriptionColor: "#000"
+    },
+    dark: {
+        background: "#000",
+        titleColor: "#fff",
+        dateColor: "#f7f3f3",
+        imgBorderColor: "#a97e1d",
+        descriptionColor: "#fff"
+    }
   },
   setOptions: function(options) {
     if (options.id) {
       this.options.id = options.id;
     }
     if (options.theme) {
-      this.options.theme = options.theme;
+      console.log(options.theme)
+      this.options.theme = this.themes[options.theme];
+      console.log(this.options.theme)
     }
 
     if (options.edges) {
@@ -100,38 +145,44 @@ var widget = {
   },
   template: function(response) {
     console.log(response)
+    response = response.data.getUser
     var html = '<link href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css" rel="stylesheet">';
 
 
     html+= `<div class="flex items-center">
 
 <div class="max-w-xs">
-    <div class="bg-white shadow-xl rounded-lg py-3">
+    <div class="${this.options.theme.background} shadow-xl rounded-2xl py-3">
         <div class="photo-wrapper p-2">
-            <img class="w-32 h-32 rounded-full mx-auto" src="https://www.gravatar.com/avatar/2acfb745ecf9d4dccb3364752d17f65f?s=260&d=mp" alt="John Doe">
+            <img class="w-32 h-32 rounded-full mx-auto" src="https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png" alt="John Doe">
         </div>
         <div class="p-2">
-            <h3 class="text-center text-xl text-gray-900 font-medium leading-8">${response.name}</h3>
-            <div class="text-center text-gray-400 text-xs font-semibold">
+            <h3 class="text-center text-xl ${this.options.theme.titleColor} font-medium leading-8">${response.username}</h3>
+            <div class="text-center ${this.options.theme.descriptionColor} text-xs font-semibold">
                 <p>Web Developer</p>
             </div>
             <table class="text-xs my-3">
                 <tbody><tr>
-                    <td class="px-2 py-2 text-gray-500 font-semibold">Address</td>
-                    <td class="px-2 py-2">Chatakpur-3, Dhangadhi Kailali</td>
+                    <td class="px-2 py-2 ${this.options.theme.titleColor} font-bold">Followers</td>
+                    <td class="px-2 py-2 ${this.options.theme.descriptionColor}">${response.followers}</td>
                 </tr>
                 <tr>
-                    <td class="px-2 py-2 text-gray-500 font-semibold">Phone</td>
-                    <td class="px-2 py-2">+977 9955221114</td>
+                    <td class="px-2 py-2 ${this.options.theme.titleColor} font-bold">Following</td>
+                    <td class="px-2 py-2 ${this.options.theme.descriptionColor}">${response.following}</td>
                 </tr>
                 <tr>
-                    <td class="px-2 py-2 text-gray-500 font-semibold">Email</td>
-                    <td class="px-2 py-2">john@exmaple.com</td>
+                    <td class="px-2 py-2 ${this.options.theme.titleColor} font-bold">Repository Count</td>
+                    <td class="px-2 py-2 ${this.options.theme.descriptionColor}">${response.repoCount}</td>
                 </tr>
+                <tr>
+                    <td class="px-2 py-2 ${this.options.theme.titleColor} font-bold">Past Year Contributions</td>
+                    <td class="px-2 py-2 ${this.options.theme.descriptionColor}">${response.pastYearContributions}</td>
+                </tr>
+ 
             </tbody></table>
 
             <div class="text-center my-3">
-                <a class="text-xs text-indigo-500 italic hover:underline hover:text-indigo-600 font-medium" href="#">View Profile</a>
+                <a class="text-xs ${this.options.theme.headerColor} hover:${this.options.theme.header2Color} font-medium" href="https://github.com/${response.username}" target="_blank">View Profile</a>
             </div>
 
         </div>
